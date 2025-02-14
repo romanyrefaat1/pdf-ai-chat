@@ -11,7 +11,6 @@ export default async function DynamicChat({ params }) {
   const chatDocRef = doc(db, "chats", id[0]);
   const chatSnap = await getDoc(chatDocRef);
   if (!chatSnap || !chatSnap.exists()) {
-    console.log(chatSnap);
     notFound();
   }
   return (

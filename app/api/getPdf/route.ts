@@ -19,7 +19,6 @@ export async function POST(request: Request) {
   const collectionRef = collection(db, collectionPath);
   try {
     const chatData = await fetchDataFromFireStore(collectionRef, [constraint]);
-    // console.log(chatData, "chatData");
     if (!chatData || !Array.isArray(chatData) || !chatData[0]) {
       return NextResponse.json(
         { error: "Chat data not found" },

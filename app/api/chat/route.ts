@@ -7,11 +7,6 @@ export async function POST(req: Request) {
     const { message, chatHistory } = await req.json();
 
     // Debug log to verify token
-    console.log("API Token exists:", !!process.env.NEXT_PUBLIC_GEMINI_API_KEY);
-    console.log(
-      "API Token starts with:",
-      process.env.NEXT_PUBLIC_GEMINI_API_KEY?.slice(0, 4)
-    );
     console.log(`chatHistory:`, chatHistory)
 
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {

@@ -42,7 +42,6 @@ const TestFile = () => {
       }
 
       const { url } = await response.json();
-    //   console.log('File uploaded successfully:', url);
       
     } catch (error: any) {
       console.error("Upload error:", error);
