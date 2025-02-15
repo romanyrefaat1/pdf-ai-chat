@@ -1,6 +1,8 @@
+import { FC } from "react";
 import Navbar from "./_components/navbar";
+import { LayoutProps } from "@/types";
 
-const Layout = ({ children }) => {
+const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <div className="h-full">
       <Navbar />

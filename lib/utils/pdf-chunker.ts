@@ -1,11 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-// Debug: Log initialization of GoogleGenerativeAI with the API key used
-console.log(
-  "Initializing GoogleGenerativeAI with API key:",
-  process.env.NEXT_PUBLIC_GEMINI_API_KEY
-);
-
 const genAI = new GoogleGenerativeAI(
   process.env.NEXT_PUBLIC_GEMINI_API_KEY || ""
 );

@@ -92,39 +92,33 @@ const Sidebar = ({ defaultCollapse }: { defaultCollapse: boolean }) => {
           width: isCollapsed ? 0 : isMobile ? "100vw" : `${sidebarWidth}px`,
         }}
         className={cn(
-          "group/sidebar h-full bg-secondary z-[99999] flex flex-col overflow-hidden",
-          isMobile && "fixed top-0 left-0",
+          "group/sidebar h-full bg-secondary overflow-y-auto relative flex flex-col z-[99999]",
           isReseting && "transition-all ease-in-out duration-300"
         )}
       >
-        <div className={cn(
-          "flex flex-col min-w-[240px] h-full",
-          isCollapsed && "invisible"
-        )}>
-          {!isMobile && (
-            <div
-              role="button"
-              onClick={() => setIsCollapsed(true)}
-              className={cn(
-                "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition"
-              )}
-            >
-              <ChevronsLeft className="w-6 h-6" />
-            </div>
-          )}
-          <UserItem />
+        {!isMobile && (
           <div
             role="button"
-            onClick={handleCreate}
-            className="flex gap-x-2 items-center transition p-2 hover:bg-foreground/5"
+            onClick={() => setIsCollapsed(true)}
+            className={cn(
+              "h-6 w-6 text-muted-foreground rounded-sm hover:bg-neutral-300 dark:hover:bg-neutral-600 absolute top-3 right-2 opacity-0 group-hover/sidebar:opacity-100 transition"
+            )}
           >
-            <PlusCircle className="w-4 h-4 text-foreground" />
-            Start Chat
+            <ChevronsLeft className="w-6 h-6" />
           </div>
-          <ModeToggle />
-          <div className="mt-4 p-2 flex-1 overflow-y-auto">
-            <ChatsList />
-          </div>
+        )}
+        <UserItem />
+        <div
+          role="button"
+          onClick={handleCreate}
+          className="flex gap-x-2 items-center transition p-2 hover:bg-foreground/5"
+        >
+          <PlusCircle className="w-4 h-4 text-foreground" />
+          Start Chat
+        </div>
+        <ModeToggle />
+        <div className="mt-4 p-2">
+          <ChatsList />
         </div>
         {!isMobile && (
           <div
@@ -141,20 +135,19 @@ const Sidebar = ({ defaultCollapse }: { defaultCollapse: boolean }) => {
         ref={navbarRef}
         style={{
           left: isCollapsed ? 0 : isMobile ? "calc(100vw - 65px)" : `${sidebarWidth}px`,
-          // width: isCollapsed
-          //   ? "100%"
-          //   : isMobile
-          //   ? "45px"
-          //   : `calc(100% - ${sidebarWidth}px)`,
+          width: isCollapsed
+            ? "100%"
+            : isMobile
+            ? "45px"
+            : `calc(100% - ${sidebarWidth}px)`,
         }}
         className={cn(
-          "absolute top-0 z-[99999] w-fit",
-          isMobile && "fixed",
+          "absolute top-0 w-fit bg-[red] w-full z-[99999]",
           isReseting && "transition-all ease-in-out duration-300"
         )}
       >
         {(isCollapsed || isMobile) && (
-          <nav className="bg-transparent px-3 py-2 w-fit bg-secondary">
+          <nav className="bg-transparent px-3 py-2 w-full bg-[blue] bg-secondary w-full">
             <MenuIcon
               role="button"
               onClick={handleReset}

@@ -38,7 +38,7 @@ const PDFPreviewer = ({ chatId }: { chatId: string }) => {
     return () => {
       if (pdfUrl) URL.revokeObjectURL(pdfUrl);
     };
-  }, [chatId]);
+  }, [chatId, pdfUrl]);
 
   if (error) {
     return (

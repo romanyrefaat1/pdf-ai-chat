@@ -12,7 +12,11 @@ export default function Home() {
         </p>
       </div>
       <div className="max-w-xl w-full">
-        <DropzoneForm />
+        <DropzoneForm
+          accept={{
+            "application/pdf": [".pdf"],
+          }}
+        />
       </div>
     </div>
   );

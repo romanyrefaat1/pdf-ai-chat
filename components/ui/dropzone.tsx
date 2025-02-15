@@ -1,10 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { useDropzone, type FileRejection } from "react-dropzone";
-import { toast } from "sonner";
+import { useCallback } from "react";
+import { useDropzone } from "react-dropzone";
+import { DropzoneProps } from "@/types";
 
-type DropzoneSize = "xs" | "sm" | "normal" | "lg" | "xl";
+interface ExtendedDropzoneProps extends DropzoneProps {
+  size?: "xs" | "sm" | "normal" | "lg" | "xl";
+}
 
 const sizeClasses = {
   xs: "min-h-[15vh]",
@@ -14,52 +16,32 @@ const sizeClasses = {
   xl: "min-h-[50vh]",
 };
 
-export default function PdfDropzone({
-  file,
-  setFile,
+const Dropzone = ({
+  onFileAccepted,
+  maxSize = 20971520,
+  accept,
   size = "normal",
-}: {
-  file: any;
-  setFile: any;
-  size?: DropzoneSize;
-}) {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    toast.success(`Your PDF is uploaded successfully`);
-    // console.log(`accepted:`, acceptedFiles[0]);
-    const newFile = acceptedFiles[0];
-    // console.log(`newFile`, newFile);
-
-    setFile({
-      fileData: newFile,
-      preview: URL.createObjectURL(acceptedFiles[0]),
-    });
-  }, []);
-
-  // useEffect(() => console.log(`file:`, file), [file]);
-
+}: ExtendedDropzoneProps) => {
   const { getRootProps, getInputProps, isDragActive, fileRejections } =
     useDropzone({
-      onDrop,
-      accept: {
-        "application/pdf": [".pdf"],
-      },
+      onDrop: useCallback(
+        (acceptedFiles: File[]) => {
+          if (acceptedFiles?.[0]) {
+            onFileAccepted(acceptedFiles[0]);
+          }
+        },
+        [onFileAccepted]
+      ),
+      maxSize,
+      accept,
       multiple: false,
     });
 
-  const fileRejectionItems = fileRejections.map(
-    ({ file, errors }: { file: File; errors: any[] }) => (
-      <li key={file.name}>
-        {file.name} - {file.size} bytes
-        <ul>
-          {errors.map((e) => (
-            <li key={e.code} className="text-red-500">
-              {e.message}
-            </li>
-          ))}
-        </ul>
-      </li>
-    )
-  );
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
+    <li key={file.name}>
+      {file.name} - {errors.map((e) => e.message).join(", ")}
+    </li>
+  ));
 
   return (
     <div className="container w-full">
@@ -69,10 +51,7 @@ export default function PdfDropzone({
           ${isDragActive ? "border-blue-500 bg-blue-50" : "border-gray-300"}
           ${sizeClasses[size]}`}
       >
-        <input
-          {...getInputProps()}
-          className=" absolute top-0 left-0 flex items-center align-center"
-        />
+        <input {...getInputProps()} />
         {isDragActive ? (
           <p>Drop the PDF here...</p>
         ) : (
@@ -86,24 +65,8 @@ export default function PdfDropzone({
           <ul>{fileRejectionItems}</ul>
         </div>
       )}
-
-      {file !== null && (
-        <div className="mt-4">
-          <h4>Accepted PDF</h4>
-          <div>
-            <div className="text-sm">
-              Name:{" "}
-              <span className={`text-muted-foreground`}>{file.fileData.name}</span>
-            </div>
-            <div className="text-sm">
-              Size:{" "}
-              <span className="text-muted-foreground">
-                {file.fileData.size} bytes
-              </span>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
-}
+};
+
+export default Dropzone;
